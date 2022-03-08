@@ -163,13 +163,13 @@ class Insumo(models.Model):
 
 class Estructura(MPTTModel):
     name = models.CharField(max_length=200)
-    letra = models.CharField(max_length=20, blank=True)
-    mission = models.TextField(blank=True)
-    function = models.TextField(blank=True)
-    decreto = models.CharField(max_length=50, blank=True)
-    marco_legal = models.TextField(blank=True)
-    diagnostico = models.TextField(blank=True)
-    procesos_participativos = models.TextField(blank=True)
+    letra = models.CharField(max_length=20, null=True)
+    mission = models.TextField(null=True)
+    function = models.TextField(null=True)
+    decreto = models.CharField(max_length=50, null=True)
+    marco_legal = models.TextField(null=True)
+    diagnostico = models.TextField(null=True)
+    procesos_participativos = models.TextField(null=True)
     # Habría que agregar campos para subir archivos adjuntos
     # documento_myf = models.FileField
 
