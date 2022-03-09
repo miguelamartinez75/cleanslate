@@ -3,6 +3,7 @@ from .models import Indicador, Tipofuncion, Data, Parametro, Objetivo, Actividad
 import numexpr
 
 
+# localhost/objetivos/tablero/1/30-04-2021
 def calcular(indic, date_Until):
     # Calcula el valor del indicador a la ultima fecha disponible anterior a date_Until
 

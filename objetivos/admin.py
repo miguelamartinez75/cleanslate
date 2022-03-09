@@ -30,7 +30,6 @@ admin.site.register(
     list_display=(
         'tree_actions',
         'indented_title',
-
     ),
     list_display_links=(
         'indented_title',
