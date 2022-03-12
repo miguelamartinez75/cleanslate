@@ -11,8 +11,8 @@ class Objetivo(MPTTModel):
     id_estructura = models.ForeignKey('Estructura', on_delete=models.CASCADE, null=True, blank=True)
     createdAt = models.DateTimeField(auto_now_add=True)
     parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
-    tiene_indicador = models.BooleanField(default=False)
-    id_indicador = models.ForeignKey('Indicador', on_delete=models.CASCADE, null=True, blank=True)
+    # tiene_indicador = models.BooleanField(default=False)
+    # id_indicador = models.ForeignKey('Indicador', on_delete=models.CASCADE, null=True, blank=True)
     id_actividad = models.ForeignKey('Actividad', on_delete=models.CASCADE, null=True, blank=True)
     prefer = models.FloatField(default=1)
     id_Tema_Estrategico = models.ForeignKey('Tema_Estrategico', null=True, on_delete=models.CASCADE, blank=True)
@@ -170,6 +170,7 @@ class Estructura(MPTTModel):
     marco_legal = models.TextField(null=True)
     diagnostico = models.TextField(null=True)
     procesos_participativos = models.TextField(null=True)
+    # objetivos = models.ManyToManyField('Objetivo', blank=True)
     # Habría que agregar campos para subir archivos adjuntos
     # documento_myf = models.FileField
 
@@ -182,8 +183,8 @@ class Estructura(MPTTModel):
         else:
             return self.letra + " - " + self.name + " id(" + str(self.id) + ")"
 
-    #def get_descendants_for(self, idx, include_self):
-    #    return set(self.nodes[idx].get_descendants(include_self=include_self))
+    # def get_descendants_for(self, idx, include_self):
+    #     return set(self.nodes[idx].get_descendants(include_self=include_self))
 
     class MPTTMeta:
         order_insertion_by = ['name']

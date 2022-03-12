@@ -3,9 +3,9 @@ from .models import Indicador, Tipofuncion, Data, Parametro, Objetivo, Actividad
 import numexpr
 
 
-# localhost/objetivos/tablero/1/30-04-2021
 def calcular(indic, date_Until):
     # Calcula el valor del indicador a la ultima fecha disponible anterior a date_Until
+    # localhost/objetivos/tablero/1/30-04-2021
 
     if 1 == 1:
         # try:
@@ -39,86 +39,67 @@ def calcular_objetivo(id_obj, peso_relativo, date_Until, matrix):
 
     # Primero verificar si tiene indicador asociado
     objetivo = Objetivo.objects.get(pk=id_obj)
-    if objetivo.id_indicador:
-        # print(objetivo.id_indicador)
-        co = calcular(objetivo.id_indicador.id, date_Until)
-        # print(co)
-        if co == None:
+    # Averiguar los hijos de objetivo
+    hijos = objetivo.get_children()
+    # print("%s tiene %s hijos" %(objetivo.codigo, len(hijos)))
+    if hijos:
+
+        # Calcular el total de pesos de los hijos
+        suma_pesos = 0
+        for hijo in hijos:
+            suma_pesos = suma_pesos + hijo.prefer
+
+        # prefer_acum = 0
+        valor_acum = 0
+        pesos_nulos = 0
+        for hijo in hijos:
+            peso_hijo = peso_relativo * hijo.prefer / suma_pesos
+            Item = calcular_objetivo(hijo.id, peso_hijo, date_Until, matrix_objetivos)
+            if Item[-1][4] != None:
+                # prefer_acum = prefer_acum + hijo.prefer
+                valor_acum = valor_acum + Item[-1][4] * hijo.prefer / suma_pesos
+            else:
+                pesos_nulos = pesos_nulos + hijo.prefer
+
+        try:
+            if pesos_nulos > 0:
+                valor = valor_acum * suma_pesos / (suma_pesos - pesos_nulos)
+            else:
+                valor = valor_acum  # / prefer_acum
+                # print(objetivo.codigo, valor)
+        except:
+            valor = None
+
+        if valor == None:
             color = "#D4D4D4"
         else:
-            if co >= 0.75:
+            if valor >= 0.75:
                 color = "#00FF00"
             else:
-                if co >= 0.5:
+                if valor >= 0.5:
                     color = "#FFFF00"
                 else:
-                    if co >= 0.25:
+                    if valor >= 0.25:
                         color = "#FF8800"
                     else:
                         color = "#FF0000"
-        elem = [objetivo.codigo, objetivo.parent.codigo, peso_relativo, color, co]
-    else:
-        # Averiguar los hijos de objetivo
-        hijos = objetivo.get_children()
-        # print("%s tiene %s hijos" %(objetivo.codigo, len(hijos)))
-        if hijos:
 
-            # Calcular el total de pesos de los hijos
-            suma_pesos = 0
-            for hijo in hijos:
-                suma_pesos = suma_pesos + hijo.prefer
-
-            # prefer_acum = 0
-            valor_acum = 0
-            pesos_nulos = 0
-            for hijo in hijos:
-                peso_hijo = peso_relativo * hijo.prefer / suma_pesos
-                Item = calcular_objetivo(hijo.id, peso_hijo, date_Until, matrix_objetivos)
-                if Item[-1][4] != None:
-                    # prefer_acum = prefer_acum + hijo.prefer
-                    valor_acum = valor_acum + Item[-1][4] * hijo.prefer / suma_pesos
-                else:
-                    pesos_nulos = pesos_nulos + hijo.prefer
-
-            try:
-                if pesos_nulos > 0:
-                    valor = valor_acum * suma_pesos / (suma_pesos - pesos_nulos)
-                else:
-                    valor = valor_acum  # / prefer_acum
-                    # print(objetivo.codigo, valor)
-            except:
-                valor = None
-
-            if valor == None:
-                color = "#D4D4D4"
-            else:
-                if valor >= 0.75:
-                    color = "#00FF00"
-                else:
-                    if valor >= 0.5:
-                        color = "#FFFF00"
-                    else:
-                        if valor >= 0.25:
-                            color = "#FF8800"
-                        else:
-                            color = "#FF0000"
-
-            # Si no tiene padre (en el caso de raiz) dejar una cadena vacia
-            if objetivo.parent:
-                padre = objetivo.parent.codigo
-                # elem = [objetivo.codigo, padre, objetivo.prefer, color, valor]
-                # matrix_objetivos.append(elem)
-            else:
-                padre = "Raiz"
-                # elem = [objetivo.codigo, padre, objetivo.prefer, color, valor]
-                # matrix_objetivos.append(elem)
-
-            elem = [objetivo.codigo, padre, 0, color, valor]
-
-
+        # Si no tiene padre (en el caso de raiz) dejar una cadena vacia
+        if objetivo.parent:
+            padre = objetivo.parent.codigo
+            # elem = [objetivo.codigo, padre, objetivo.prefer, color, valor]
+            # matrix_objetivos.append(elem)
         else:
-            # El objetivo no tiene ni indicador ni hijos .. Dejar en gris
-            elem = [objetivo.codigo, objetivo.parent.codigo, peso_relativo, "#D4D4D4", None]
+            padre = "Raiz"
+            # elem = [objetivo.codigo, padre, objetivo.prefer, color, valor]
+            # matrix_objetivos.append(elem)
+
+        elem = [objetivo.codigo, padre, 0, color, valor]
+
+
+    else:
+        # El objetivo no tiene ni indicador ni hijos .. Dejar en gris
+        elem = [objetivo.codigo, objetivo.parent.codigo, peso_relativo, "#D4D4D4", None]
 
     matrix_objetivos.append(elem)
 

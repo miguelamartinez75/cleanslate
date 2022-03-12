@@ -4,12 +4,11 @@ from rest_framework.decorators import api_view
 from datetime import date, datetime, timedelta
 from rest_framework import status
 from django.shortcuts import get_object_or_404
-import json
 from json import JSONEncoder
 import numpy as np
 from .models import Estructura, Objetivo
-from .serializers import EstructuraSerializer, ObjetivoSerializer
-from .utils import calcular_objetivo
+from .serializers import EstructuraSerializer, EstructuraItemSerializer, ObjetivoSerializer
+from .utils import calcular_objetivo, calcular_oai
 
 
 class NumpyArrayEncoder(JSONEncoder):
@@ -63,7 +62,7 @@ def delEstructura(request, id=None):
 @api_view(['GET'])
 def getEstructuraItem(request, id):
     item = Estructura.objects.get(pk=id)
-    serializer = EstructuraSerializer(item)
+    serializer = EstructuraItemSerializer(item)
     return Response({"status": "success", "data": serializer.data}, status=status.HTTP_200_OK)
 
 
@@ -119,7 +118,7 @@ def armar_tablero(request, id_obj, date_Until_text):
 
     matrix_objetivos = []
     date_Until = datetime.strptime(date_Until_text, '%d-%m-%Y')
-    matrix_resultados = calcular_objetivo(id_obj, 100, date_Until, matrix_objetivos)
+    matrix_resultados = calcular_oai(id_obj, 100, date_Until, matrix_objetivos)
 
     matrix_transversa = np.array(matrix_resultados).T
     marcadores = dict(colors=matrix_transversa[3])
@@ -128,7 +127,7 @@ def armar_tablero(request, id_obj, date_Until_text):
     valores = matrix_transversa[4].copy()
 
     for i in range(0, len(valores)):
-        if valores[i] == None:
+        if valores[i] is None:
             labels.append(f"{matrix_transversa[0][i]} <br> <b>Sin datos</b>")
         else:
             labels.append(f"{matrix_transversa[0][i]} <br> <b>{int(round(float(valores[i]) * 100, 0))}</b>")
@@ -137,4 +136,6 @@ def armar_tablero(request, id_obj, date_Until_text):
     parents = matrix_transversa[1]
     values = matrix_transversa[2]
 
-    return Response({"data": [{"ids": ids, "labels": labels, "parents": parents, "values": values, "type": "sunburst", "maxdepth": 3, "marker": marcadores}]})
+    return Response({"data": [
+        {"ids": ids, "labels": labels, "parents": parents, "values": values, "type": "sunburst", "maxdepth": 3,
+         "marker": marcadores}]})
