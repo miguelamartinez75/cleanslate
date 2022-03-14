@@ -11,11 +11,10 @@ class Objetivo(MPTTModel):
     id_estructura = models.ForeignKey('Estructura', on_delete=models.CASCADE, null=True, blank=True)
     createdAt = models.DateTimeField(auto_now_add=True)
     parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
-    # tiene_indicador = models.BooleanField(default=False)
-    # id_indicador = models.ForeignKey('Indicador', on_delete=models.CASCADE, null=True, blank=True)
     id_actividad = models.ForeignKey('Actividad', on_delete=models.CASCADE, null=True, blank=True)
     prefer = models.FloatField(default=1)
     id_Tema_Estrategico = models.ForeignKey('Tema_Estrategico', null=True, on_delete=models.CASCADE, blank=True)
+    estrategico = models.BooleanField(default=False)
     Objetivos_Precedentes = models.ManyToManyField('Objetivo', blank=True)  # related_name="Objetivos_Precedentes"
 
     class MPTTMeta:

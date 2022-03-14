@@ -6,8 +6,8 @@ from rest_framework import status
 from django.shortcuts import get_object_or_404
 from json import JSONEncoder
 import numpy as np
-from .models import Estructura, Objetivo
-from .serializers import EstructuraSerializer, EstructuraItemSerializer, ObjetivoSerializer
+from .models import Estructura, Objetivo, Actividad
+from .serializers import EstructuraSerializer, EstructuraItemSerializer, EstructuraItemNameSerializer, ObjetivoSerializer, ActividadSerializer
 from .utils import calcular_objetivo, calcular_oai
 
 
@@ -63,6 +63,13 @@ def delEstructura(request, id=None):
 def getEstructuraItem(request, id):
     item = Estructura.objects.get(pk=id)
     serializer = EstructuraItemSerializer(item)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def getEstructuraItemName(request, id):
+    item = Estructura.objects.get(pk=id)
+    serializer = EstructuraItemNameSerializer(item)
     return Response({"status": "success", "data": serializer.data}, status=status.HTTP_200_OK)
 
 
@@ -106,6 +113,18 @@ def delObjetivo(request, id=None):
     item.delete()
     return Response({"status": "success", "data": "Item Deleted"})
 
+
+# Actividades
+@api_view(['GET'])
+def getActividad(request, id=None):
+    if id:
+        item = Actividad.objects.get(pk=id)
+        serializer = ActividadSerializer(item)
+        return Response(serializer.data)
+
+    actividades = Actividad.objects.all()
+    serializer = ActividadSerializer(actividades, many=True)
+    return Response(serializer.data)
 
 # Tablero, datos para el sunburst
 @api_view(['GET'])

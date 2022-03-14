@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
-from .models import Estructura, Objetivo
+from .models import Estructura, Objetivo, Actividad
 
 
 class EstructuraSerializer(ModelSerializer):
@@ -25,7 +25,19 @@ class EstructuraItemSerializer(ModelSerializer):
         fields = ('__all__')
 
 
+class EstructuraItemNameSerializer(ModelSerializer):
+    class Meta:
+        model = Estructura
+        fields = ['name']
+
+
 class ObjetivoSerializer(ModelSerializer):
     class Meta:
         model = Objetivo
+        fields = ('__all__')
+
+
+class ActividadSerializer(ModelSerializer):
+    class Meta:
+        model = Actividad
         fields = ('__all__')
