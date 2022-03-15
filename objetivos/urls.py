@@ -25,4 +25,8 @@ urlpatterns = [
     path('actividad/<int:id>', views.getActividad),
 
     path('tablero/<int:id_obj>/<date_Until_text>', views.armar_tablero),
-]
+
+    # Resumen
+    path('resumen/<int:id_estruc>', views.mostrar_resumen_por_puesto, name='resumen_por_puesto'),
+    path('tablero_oai/<int:id_obj>/<date_until_text>/<int:delta_fechas>', views.armar_tablero_oai, name='tablero_oai'),
+    ]

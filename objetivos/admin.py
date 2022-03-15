@@ -1,7 +1,7 @@
 from django.contrib import admin
 from mptt.admin import DraggableMPTTAdmin
 
-from .models import Tema_Estrategico, Accion, Actividad, Objetivo, Data, Estructura, Preferencia, Tipo_Actividad, \
+from .models import Accion, Actividad, Objetivo, Data, Estructura, Tipo_Actividad, \
     Tipo_Indicador, Tipofuncion, Indicador, Parametro, finalidad_y_funcion, ods, politica_publica
 
 # admin.site.register(Preferencia)
@@ -12,10 +12,7 @@ admin.site.register(Actividad)
 admin.site.register(Accion)
 admin.site.register(Tipo_Indicador)
 admin.site.register(Tipo_Actividad)
-admin.site.register(Tema_Estrategico)
 
-
-# admin.site.register(IndicadorxActividad)
 
 @admin.register(Data)
 class DataAdmin(admin.ModelAdmin):

@@ -5,23 +5,23 @@ from treewidget.fields import TreeForeignKey
 
 
 class Objetivo(MPTTModel):
-    codigo = models.CharField(max_length=50, null=True)
-    name = models.CharField(max_length=500)
+    nombre = models.CharField(max_length=50, null=True)
+    descripcion = models.CharField(max_length=500)
     descripcion_alternativa = models.CharField(max_length=500, null=True, blank=True)
     id_estructura = models.ForeignKey('Estructura', on_delete=models.CASCADE, null=True, blank=True)
-    createdAt = models.DateTimeField(auto_now_add=True)
+    createdAt = models.DateTimeField()
     parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
+    es_tema_estrategico = models.BooleanField(default=False)
+    situacion_actual = models.TextField(max_length=2000, null=True, blank=True)
+    situacion_deseada = models.TextField(max_length=2000, null=True, blank=True)
     id_actividad = models.ForeignKey('Actividad', on_delete=models.CASCADE, null=True, blank=True)
     prefer = models.FloatField(default=1)
-    id_Tema_Estrategico = models.ForeignKey('Tema_Estrategico', null=True, on_delete=models.CASCADE, blank=True)
-    estrategico = models.BooleanField(default=False)
-    Objetivos_Precedentes = models.ManyToManyField('Objetivo', blank=True)  # related_name="Objetivos_Precedentes"
-
+    Objetivos_Precedentes = models.ManyToManyField('Objetivo', blank=True)  #related_name="Objetivos_Precedentes"
     class MPTTMeta:
-        order_insertion_by = ['name']
+        order_insertion_by = ['nombre']
 
     def __str__(self):
-        return self.name
+        return self.nombre
 
 
 class ods(MPTTModel):
@@ -68,14 +68,14 @@ class politica_publica(MPTTModel):
         return self.name
 
 
-class Tema_Estrategico(models.Model):
+""" class Tema_Estrategico(models.Model):
     name = models.CharField(max_length=50)
     situacion_actual = models.TextField(max_length=2000, null=True, blank=True)
     situacion_deseada = models.TextField(max_length=2000, null=True, blank=True)
     id_estructura = models.ForeignKey('Estructura', on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
-        return self.name
+        return self.name """
 
 
 class Tipo_Actividad(models.Model):

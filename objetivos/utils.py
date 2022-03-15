@@ -200,7 +200,7 @@ def calcular_oai(id_obj, peso_relativo, date_Until, matrix):
                                 color = "#FF8800"
                             else:
                                 color = "#FF0000"
-                elem = [indicador.name, objetivo.codigo, peso_relativo * indicador.peso / peso_acum, color, co]
+                elem = [indicador.name, objetivo.nombre, peso_relativo * indicador.peso / peso_acum, color, co]
                 matrix_objetivos.append(elem)
 
                 # Calcular indicador promedio para la actividad
@@ -224,7 +224,7 @@ def calcular_oai(id_obj, peso_relativo, date_Until, matrix):
                         else:
                             color = "#FF0000"
                             # Agregar el registro de la actividad. El peso relativo es cero porque suma el peso de sus hijos
-            elem = [objetivo.codigo, objetivo.parent.codigo, 0, color, co_activ]
+            elem = [objetivo.nombre, objetivo.parent.nombre, 0, color, co_activ]
     else:
         # Averiguar los hijos de objetivo
         hijos = objetivo.get_children()
@@ -273,7 +273,7 @@ def calcular_oai(id_obj, peso_relativo, date_Until, matrix):
 
             # Si no tiene padre (en el caso de raiz) dejar una cadena vacia
             if objetivo.parent:
-                padre = objetivo.parent.codigo
+                padre = objetivo.parent.nombre
                 # elem = [objetivo.codigo, padre, objetivo.prefer, color, valor]
                 # matrix_objetivos.append(elem)
             else:
@@ -281,12 +281,12 @@ def calcular_oai(id_obj, peso_relativo, date_Until, matrix):
                 # elem = [objetivo.codigo, padre, objetivo.prefer, color, valor]
                 # matrix_objetivos.append(elem)
 
-            elem = [objetivo.codigo, padre, 0, color, valor]
+            elem = [objetivo.nombre, padre, 0, color, valor]
 
 
         else:
             # El objetivo no tiene ni indicador ni hijos .. Dejar en gris
-            elem = [objetivo.codigo, objetivo.parent.codigo, peso_relativo, "#D4D4D4", None]
+            elem = [objetivo.nombre, objetivo.parent.nombre, peso_relativo, "#D4D4D4", None]
 
     matrix_objetivos.append(elem)
 

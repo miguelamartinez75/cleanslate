@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>Este puesto depende de:</h2>
+    <p>Superior: 
+        {% url 'resumen_por_puesto' estructura.parent.id as the_url %}
+        <a href="{{ the_url }}">{{ estructura.parent.name }}</a>
+    </p>
+    <p></p>
+    <h2>Datos generales del puesto:</h2>
+    <p>Nombre: {{ estructura.name }} </p>
+    <p>Misión: {{ estructura.mission }} </p>
+    <p>Funciones: {{ estructura.function }} </p>
+    <p>Marco legal: {{ estructura.marco_legal }} </p>
+    <p>Diagnóstico: {{ estructura.diagnostico }} </p>
+    <p></p>
+
+    <h2>Objetivos específicos del area:</h2>
+    <ul>
+        {% for objetivo in obj %}
+            <li> 
+                {% url 'tablero_oai' objetivo.id '31-01-2022' 365 as the_url %}
+
+            <a href="{{ the_url }}" target="_blank">{{ objetivo.nombre }}</a>
+            </li>
+                    
+            {% empty %} <li>No hay objetivos para este puesto</li>
+        {% endfor %}
+    </ul>
+
+
+    <h2>Areas que dependen del puesto directamente:</h2>
+    <ul>
+        {% for dependiente in dep %}
+            <li> 
+                {% url 'resumen_por_puesto' dependiente.id as the_url %}
+
+            <a href="{{ the_url }}">{{ dependiente.name }}</a>
+            </li>
+            {% empty %} <li>Este puesto no tiene areas a cargo</li>
+        {% endfor %}
+    </ul>
+    
+
+    <p></p>
+    <h2>Tabla de temas estratégicos del area</h2>
+    <table>
+        <tr>
+            <td>Tema</td>
+            <td>Situacion actual</td>
+            <td>Camino</td>
+            <td>Situacion deseada</td>
+        </tr>
+        {% for tema in te %}
+            <tr><td> {{ tema.nombre }} </td><td> {{tema.situacion_actual}} </td> <td>--></td><td>  {{tema.situacion_deseada}}</td></tr>
+            {% empty %} <p>Aún no se han definido temas estratégicos para el área</p>
+        {% endfor %}
+    </table>
+    <p></p>
+    
+    <h2>Actividades del area</h2>
+    <ul>
+        {% for actividad in act %}
+            <li> {{ actividad.name }}</li>
+            {% empty %} <li>El área no desarrolla actividades</li>
+        {% endfor %}
+    </ul>
+   
+    
+</body>
+</html>
