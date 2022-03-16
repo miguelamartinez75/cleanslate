@@ -1,6 +1,5 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-# from rest_framework.views import APIView
 from datetime import date, datetime, timedelta
 from rest_framework import status
 from django.shortcuts import get_object_or_404
@@ -126,6 +125,7 @@ def getActividad(request, id=None):
     serializer = ActividadSerializer(actividades, many=True)
     return Response(serializer.data)
 
+
 # Tablero, datos para el sunburst
 @api_view(['GET'])
 def armar_tablero(request, id_obj, date_Until_text):
@@ -158,3 +158,26 @@ def armar_tablero(request, id_obj, date_Until_text):
     return Response({"data": [
         {"ids": ids, "labels": labels, "parents": parents, "values": values, "type": "sunburst", "maxdepth": 3,
          "marker": marcadores}]})
+
+
+# Esta vista la traje del proyecto viejo solo para poder ver los datos. Hay que serializarlos
+@api_view(['GET'])
+def mostrar_resumen_por_puesto(request, id_estruc):
+    estructura = Estructura.objects.get(pk=id_estruc)
+    estructuraSerializer = EstructuraSerializer(estructura, many=False)
+    objetivos = Objetivo.objects.filter(id_estructura=id_estruc).exclude(parent__id_estructura=id_estruc)
+    objetivosSerializer = ObjetivoSerializer(objetivos, many=True)
+    dependientes = Estructura.objects.filter(parent=id_estruc)
+    dependientesSerializer = EstructuraSerializer(dependientes, many=True)
+    #temas = Tema_Estrategico.objects.filter(id_estructura=id_estruc)
+    objetivosEstrategicos = Objetivo.objects.filter(id_estructura=id_estruc).filter(es_tema_estrategico=True)
+    objetivosEstratejicosSerializer = ObjetivoSerializer(objetivosEstrategicos, many=True)
+    activ = Actividad.objects.filter(id_Estructura=id_estruc)
+    activSerializer = ActividadSerializer(activ, many=True)
+    # Faltaría buscar los indicadores de esas actividades, para poder mostrarlos en el template
+    return Response({"data": [
+        {"estructura": estructuraSerializer.data,
+         "dep": dependientesSerializer.data,
+         "te": objetivosEstratejicosSerializer.data,
+         "act": activSerializer.data,
+         "obj": objetivosSerializer.data}]})

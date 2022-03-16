@@ -24,5 +24,7 @@ urlpatterns = [
     path('actividad/', views.getActividad),
     path('actividad/<int:id>', views.getActividad),
 
+    path('resporpuesto/<int:id_estruc>', views.mostrar_resumen_por_puesto),
+
     path('tablero/<int:id_obj>/<date_Until_text>', views.armar_tablero),
 ]

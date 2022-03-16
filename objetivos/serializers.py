@@ -41,3 +41,4 @@ class ActividadSerializer(ModelSerializer):
     class Meta:
         model = Actividad
         fields = ('__all__')
+
