@@ -2,8 +2,6 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    # path('est/', EstructuraItemViews.as_view()),
-    # path('est/<int:id>', EstructuraItemViews.as_view()),
     # Estructura
     path('est/', views.getEstructura),
     path('est/<int:id>', views.getEstructura),
@@ -24,7 +22,9 @@ urlpatterns = [
     path('actividad/', views.getActividad),
     path('actividad/<int:id>', views.getActividad),
 
+    # Resumen por puesto
     path('resporpuesto/<int:id_estruc>', views.mostrar_resumen_por_puesto),
 
+    # Tablero sunburst
     path('tablero/<int:id_obj>/<date_Until_text>', views.armar_tablero),
 ]

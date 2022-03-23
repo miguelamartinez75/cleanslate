@@ -7,7 +7,7 @@ from json import JSONEncoder
 import numpy as np
 from .models import Estructura, Objetivo, Actividad
 from .serializers import EstructuraSerializer, EstructuraItemSerializer, EstructuraItemNameSerializer, ObjetivoSerializer, ActividadSerializer
-from .utils import calcular_objetivo, calcular_oai
+from .utils import calcular_objetivo, calcular_oai, ajustar_cadena
 
 
 class NumpyArrayEncoder(JSONEncoder):
@@ -147,9 +147,9 @@ def armar_tablero(request, id_obj, date_Until_text):
 
     for i in range(0, len(valores)):
         if valores[i] is None:
-            labels.append(f"{matrix_transversa[0][i]} <br> <b>Sin datos</b>")
+            labels.append(f"{ajustar_cadena(matrix_transversa[0][i])} <br> <b>Sin datos</b>")
         else:
-            labels.append(f"{matrix_transversa[0][i]} <br> <b>{int(round(float(valores[i]) * 100, 0))}</b>")
+            labels.append(f"{ajustar_cadena(matrix_transversa[0][i])} <br> <b>{int(round(float(valores[i]) * 100, 0))}</b>")
 
     ids = matrix_transversa[0]
     parents = matrix_transversa[1]
