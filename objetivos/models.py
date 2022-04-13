@@ -96,10 +96,23 @@ class Actividad(models.Model):
     id_eje = models.ForeignKey('eje', on_delete=models.CASCADE, null=True, blank=True)
     id_finalidadyfuncion = models.ForeignKey('finalidad_y_funcion', on_delete=models.CASCADE, null=True, blank=True)
     id_politicapublica = models.ForeignKey('politica_publica', on_delete=models.CASCADE, null=True, blank=True)
+    beneficiario = models.ManyToManyField('Beneficiario', null=True, blank=True)
+    # Nuevos campos
+    problema = models.CharField(max_length=500, null=True, blank=True)
+    productos_secundarios = models.CharField(max_length=500, null=True, blank=True)
+    ref_presupuesto = models.CharField(max_length=50, null=True)
+    duracion = models.IntegerField()
 
     def __str__(self):
         return self.name
 
+
+class Beneficiario(models.Model):
+    name = models.CharField(max_length=100)
+    createdAt = models.DateTimeField()
+
+    def __str__(self):
+        return self.name
 
 # class IndicadorxActividad(models.Model):
 #    id_indicador = models.ForeignKey('Indicador', on_delete=models.CASCADE, null=True, blank=True)
@@ -110,8 +123,9 @@ class Actividad(models.Model):
 
 
 # class Objetivos_Requeridos(models.Model):
-#    Objetivo_Precedente = models.ForeignKey('Objetivo', on_delete=models.CASCADE, null=True, blank=True, related_name='Precedente')
-#    Objetivo_Siguiente = models.ForeignKey('Objetivo', on_delete=models.CASCADE, null=True, blank=True, related_name='Siguiente')
+# Objetivo_Precedente = models.ForeignKey('Objetivo', on_delete=models.CASCADE, null=True, blank=True, related_name='Precedente')
+# Objetivo_Siguiente = models.ForeignKey('Objetivo', on_delete=models.CASCADE, null=True, blank=True, related_name='Siguiente')
+
 
 class TipoAccion(models.Model):
     nombre = models.CharField(max_length=50, null=True)
@@ -227,6 +241,13 @@ class Indicador(models.Model):
     tipofuncion = models.ForeignKey(Tipofuncion, on_delete=models.CASCADE, blank=True, null=True)
     id_actividad = models.ForeignKey(Actividad, on_delete=models.CASCADE, blank=True, null=True)
     peso = models.FloatField(default=1)
+    # Nuevos campos
+    definicion = models.CharField(max_length=500, blank=True)
+    modo_calculo = models.TextField(max_length=1000, blank=True)
+    unidades_medida = models.CharField(max_length=50)
+    fuente = models.CharField(max_length=500, blank=True)
+    periodicidad = models.IntegerField()  # Dias cada cuanto se publica
+    desagregaciones = models.CharField(max_length=500, blank=True)
 
     def __str__(self):
         return "%s %s" % (self.pk, self.name)
@@ -263,3 +284,10 @@ class Data(models.Model):
     def __str__(self):
         return self.indicador.name + " - " + str(self.datetime)
 
+
+# Modelos nuevos
+class PresupuestoPorActividad(models.Model):
+    id_actividad = models.ForeignKey('actividad', on_delete=models.CASCADE, null=True, blank=True)
+    presupuesto = models.FloatField()
+    avance_estimado = models.FloatField()
+    ejecicio = models.CharField(max_length=50, null=True, blank=True)
