@@ -126,6 +126,27 @@ def getActividad(request, id=None):
     return Response(serializer.data)
 
 
+@api_view(['PUT'])
+def setActividad(request):
+    serializer = ActividadSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response({"status": "success", "data": serializer.data}, status=status.HTTP_200_OK)
+    else:
+        return Response({"status": "error", "data": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['PATCH'])
+def patchActividad(request, id=None):
+    item = Actividad.objects.get(pk=id)
+    serializer = ActividadSerializer(item, data=request.data, partial=True)
+    if serializer.is_valid():
+        serializer.save()
+        return Response({"status": "success", "data": serializer.data})
+    else:
+        return Response({"status": "error", "data": serializer.errors})
+
+
 # Tablero, datos para el sunburst
 @api_view(['GET'])
 def armar_tablero(request, id_obj, date_Until_text):

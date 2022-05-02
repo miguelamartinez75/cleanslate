@@ -21,6 +21,8 @@ urlpatterns = [
     # Actividades
     path('actividad/', views.getActividad),
     path('actividad/<int:id>', views.getActividad),
+    path('setactividad/', views.setActividad),
+    path('setactividad/<int:id>', views.patchActividad),
 
     # Resumen por puesto
     path('resporpuesto/<int:id_estruc>', views.mostrar_resumen_por_puesto),
