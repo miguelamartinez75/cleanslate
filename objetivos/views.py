@@ -126,6 +126,13 @@ def getActividad(request, id=None):
     return Response(serializer.data)
 
 
+@api_view(['GET'])
+def getActividadPorPuesto(request, id=None):
+    actividades = Actividad.objects.filter(id_Estructura=id)
+    serializer = ActividadSerializer(actividades, many=True)
+    return Response(serializer.data)
+
+
 @api_view(['PUT'])
 def setActividad(request):
     serializer = ActividadSerializer(data=request.data)

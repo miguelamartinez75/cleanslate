@@ -21,6 +21,7 @@ urlpatterns = [
     # Actividades
     path('actividad/', views.getActividad),
     path('actividad/<int:id>', views.getActividad),
+    path('actividadpp/<int:id>', views.getActividadPorPuesto),
     path('setactividad/', views.setActividad),
     path('setactividad/<int:id>', views.patchActividad),
 
