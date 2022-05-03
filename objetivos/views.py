@@ -117,18 +117,18 @@ def delObjetivo(request, id=None):
 @api_view(['GET'])
 def getActividad(request, id=None):
     if id:
-        item = Actividad.objects.get(pk=id)
+        item = Actividad.objects.get(pk=id).exclude(activo=False)
         serializer = ActividadSerializer(item)
         return Response(serializer.data)
 
-    actividades = Actividad.objects.all()
+    actividades = Actividad.objects.all().exclude(activo=False)
     serializer = ActividadSerializer(actividades, many=True)
     return Response(serializer.data)
 
 
 @api_view(['GET'])
 def getActividadPorPuesto(request, id=None):
-    actividades = Actividad.objects.filter(id_Estructura=id)
+    actividades = Actividad.objects.filter(id_Estructura=id).exclude(activo=False)
     serializer = ActividadSerializer(actividades, many=True)
     return Response(serializer.data)
 

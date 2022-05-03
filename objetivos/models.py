@@ -96,12 +96,13 @@ class Actividad(models.Model):
     id_eje = models.ForeignKey('eje', on_delete=models.CASCADE, null=True, blank=True)
     id_finalidadyfuncion = models.ForeignKey('finalidad_y_funcion', on_delete=models.CASCADE, null=True, blank=True)
     id_politicapublica = models.ForeignKey('politica_publica', on_delete=models.CASCADE, null=True, blank=True)
-    beneficiario = models.ManyToManyField('Beneficiario', null=True, blank=True)
+    beneficiario = models.ManyToManyField('Beneficiario', blank=True)
     # Nuevos campos
     problema = models.CharField(max_length=500, null=True, blank=True)
     productos_secundarios = models.CharField(max_length=500, null=True, blank=True)
     ref_presupuesto = models.CharField(max_length=50, null=True)
     duracion = models.IntegerField()
+    activo = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name
