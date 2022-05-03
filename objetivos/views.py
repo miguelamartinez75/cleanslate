@@ -5,8 +5,8 @@ from rest_framework import status
 from django.shortcuts import get_object_or_404
 from json import JSONEncoder
 import numpy as np
-from .models import Estructura, Objetivo, Actividad
-from .serializers import EstructuraSerializer, EstructuraItemSerializer, EstructuraItemNameSerializer, ObjetivoSerializer, ActividadSerializer
+from .models import Estructura, Objetivo, Actividad, ods, eje, finalidad_y_funcion, politica_publica, Tipo_Actividad
+from .serializers import EstructuraSerializer, EstructuraItemSerializer, EstructuraItemNameSerializer, ObjetivoSerializer, ActividadSerializer, OdsSerializer, EjeSerializer, FinalidadyFuncionSerializer, PoliticaPublicaSerializer, TipoActividadSerializer
 from .utils import calcular_objetivo, calcular_oai, ajustar_cadena
 
 
@@ -152,6 +152,71 @@ def patchActividad(request, id=None):
         return Response({"status": "success", "data": serializer.data})
     else:
         return Response({"status": "error", "data": serializer.errors})
+
+
+# ODS
+@api_view(['GET'])
+def getOds(request, id=None):
+    if id:
+        item = ods.objects.get(pk=id)
+        serializer = OdsSerializer(item)
+        return Response(serializer.data)
+
+    odss = ods.objects.all()
+    serializer = OdsSerializer(odss, many=True)
+    return Response(serializer.data)
+
+
+# EJE
+@api_view(['GET'])
+def getEje(request, id=None):
+    if id:
+        item = eje.objects.get(pk=id)
+        serializer = EjeSerializer(item)
+        return Response(serializer.data)
+
+    ejes = eje.objects.all()
+    serializer = OdsSerializer(ejes, many=True)
+    return Response(serializer.data)
+
+
+# Finalidad y Función
+@api_view(['GET'])
+def getFinalidadyFuncion(request, id=None):
+    if id:
+        item = finalidad_y_funcion.objects.get(pk=id)
+        serializer = FinalidadyFuncionSerializer(item)
+        return Response(serializer.data)
+
+    finyfun = eje.objects.all()
+    serializer = FinalidadyFuncionSerializer(finyfun, many=True)
+    return Response(serializer.data)
+
+
+# Política Pública
+@api_view(['GET'])
+def getPoliticaPublica(request, id=None):
+    if id:
+        item = politica_publica.objects.get(pk=id)
+        serializer = PoliticaPublicaSerializer(item)
+        return Response(serializer.data)
+
+    polpu = politica_publica.objects.all()
+    serializer = PoliticaPublicaSerializer(polpu, many=True)
+    return Response(serializer.data)
+
+
+# Tipo Actividad
+@api_view(['GET'])
+def getTipoActividad(request, id=None):
+    if id:
+        item = Tipo_Actividad.objects.get(pk=id)
+        serializer = TipoActividadSerializer(item)
+        return Response(serializer.data)
+
+    tipoactividad = Tipo_Actividad.objects.all()
+    serializer = TipoActividadSerializer(tipoactividad, many=True)
+    return Response(serializer.data)
 
 
 # Tablero, datos para el sunburst

@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views
 
+
 urlpatterns = [
     # Estructura
     path('est/', views.getEstructura),
@@ -30,4 +31,24 @@ urlpatterns = [
 
     # Tablero sunburst
     path('tablero/<int:id_obj>/<date_Until_text>', views.armar_tablero),
+
+    # ODS
+    path('ods/', views.getOds),
+    path('ods/<int:id>', views.getOds),
+
+    # EJE
+    path('eje/', views.getEje),
+    path('eje/<int:id>', views.getEje),
+
+    # Finalidad y Función
+    path('fyf/', views.getFinalidadyFuncion),
+    path('fyf/<int:id>', views.getFinalidadyFuncion),
+
+    # Política Pública
+    path('pp/', views.getPoliticaPublica),
+    path('pp/<int:id>', views.getPoliticaPublica),
+
+    # Tipo Actividad
+    path('tact/', views.getTipoActividad),
+    path('tact/<int:id>', views.getTipoActividad),
 ]

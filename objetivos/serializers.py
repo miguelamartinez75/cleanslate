@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
-from .models import Estructura, Objetivo, Actividad
+from .models import Estructura, Objetivo, Actividad, ods, eje, finalidad_y_funcion, politica_publica, Tipo_Actividad
 
 
 class EstructuraSerializer(ModelSerializer):
@@ -42,3 +42,32 @@ class ActividadSerializer(ModelSerializer):
         model = Actividad
         fields = ('__all__')
 
+
+class OdsSerializer(ModelSerializer):
+    class Meta:
+        model = ods
+        fields = ['id', 'name']
+
+
+class EjeSerializer(ModelSerializer):
+    class Meta:
+        model = eje
+        fields = ['id', 'name']
+
+
+class FinalidadyFuncionSerializer(ModelSerializer):
+    class Meta:
+        model = finalidad_y_funcion
+        fields = ['id', 'name']
+
+
+class PoliticaPublicaSerializer(ModelSerializer):
+    class Meta:
+        model = politica_publica
+        fields = ['id', 'name']
+
+
+class TipoActividadSerializer(ModelSerializer):
+    class Meta:
+        model = Tipo_Actividad
+        fields = ['id', 'descripcion']
