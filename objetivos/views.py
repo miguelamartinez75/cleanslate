@@ -117,9 +117,12 @@ def delObjetivo(request, id=None):
 @api_view(['GET'])
 def getActividad(request, id=None):
     if id:
-        item = Actividad.objects.get(pk=id).exclude(activo=False)
-        serializer = ActividadSerializer(item)
-        return Response(serializer.data)
+        item = Actividad.objects.get(pk=id)
+        if item.activo:
+            serializer = ActividadSerializer(item)
+            return Response(serializer.data)
+        else:
+            return Response({'data': None})
 
     actividades = Actividad.objects.all().exclude(activo=False)
     serializer = ActividadSerializer(actividades, many=True)
