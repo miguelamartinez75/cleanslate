@@ -51,4 +51,9 @@ urlpatterns = [
     # Tipo Actividad
     path('tact/', views.getTipoActividad),
     path('tact/<int:id>', views.getTipoActividad),
+
+    # Beneficiarios (tabla Actibidades)
+    path('benef/', views.getBenef),
+    path('benef/<int:id>', views.getBenef),
+    path('setbenef/', views.setBenef),
 ]

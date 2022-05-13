@@ -5,8 +5,8 @@ from rest_framework import status
 from django.shortcuts import get_object_or_404
 from json import JSONEncoder
 import numpy as np
-from .models import Estructura, Objetivo, Actividad, ods, eje, finalidad_y_funcion, politica_publica, Tipo_Actividad
-from .serializers import EstructuraSerializer, EstructuraItemSerializer, EstructuraItemNameSerializer, ObjetivoSerializer, ActividadSerializer, OdsSerializer, EjeSerializer, FinalidadyFuncionSerializer, PoliticaPublicaSerializer, TipoActividadSerializer
+from .models import Estructura, Objetivo, Actividad, ods, eje, finalidad_y_funcion, politica_publica, Tipo_Actividad, Beneficiario
+from .serializers import EstructuraSerializer, EstructuraItemSerializer, EstructuraItemNameSerializer, ObjetivoSerializer, ActividadSerializer, OdsSerializer, EjeSerializer, FinalidadyFuncionSerializer, PoliticaPublicaSerializer, TipoActividadSerializer, BeneficiarioSerializer
 from .utils import calcular_objetivo, calcular_oai, ajustar_cadena
 
 
@@ -155,6 +155,29 @@ def patchActividad(request, id=None):
         return Response({"status": "success", "data": serializer.data})
     else:
         return Response({"status": "error", "data": serializer.errors})
+
+
+# Beneficiario (para Actividades)
+@api_view(['GET'])
+def getBenef(request, id=None):
+    if id:
+        item = Beneficiario.objects.get(pk=id)
+        serializer = BeneficiarioSerializer(item)
+        return Response(serializer.data)
+
+    beneficiarios = Beneficiario.objects.all()
+    serializer = OdsSerializer(beneficiarios, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['PUT'])
+def setBenef(request):
+    serializer = BeneficiarioSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response({"status": "success", "data": serializer.data}, status=status.HTTP_200_OK)
+    else:
+        return Response({"status": "error", "data": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
 # ODS
