@@ -214,7 +214,7 @@ def getFinalidadyFuncion(request, id=None):
         serializer = FinalidadyFuncionSerializer(item)
         return Response(serializer.data)
 
-    finyfun = eje.objects.all()
+    finyfun = finalidad_y_funcion.objects.all()
     serializer = FinalidadyFuncionSerializer(finyfun, many=True)
     return Response(serializer.data)
 
