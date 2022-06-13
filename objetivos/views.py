@@ -258,6 +258,16 @@ def getIndicador(request, id=None):
     return Response(serializer.data)
 
 
+@api_view(['POST'])
+def setIndicador(request):
+    serializer = IndicadorSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response({"status": "success", "data": serializer.data}, status=status.HTTP_200_OK)
+    else:
+        return Response({"status": "error", "data": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+
 # Parametro
 @api_view(['GET'])
 def getParametro(request, id=None):
@@ -269,6 +279,16 @@ def getParametro(request, id=None):
     parametro = Parametro.objects.all()
     serializer = ParametroSerializer(parametro, many=True)
     return Response(serializer.data)
+
+
+@api_view(['POST'])
+def setParametro(request):
+    serializer = ParametroSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response({"status": "success", "data": serializer.data}, status=status.HTTP_200_OK)
+    else:
+        return Response({"status": "error", "data": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
 # Tipo Función
