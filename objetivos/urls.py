@@ -56,4 +56,20 @@ urlpatterns = [
     path('benef/', views.getBenef),
     path('benef/<int:id>', views.getBenef),
     path('setbenef/', views.setBenef),
+
+    # Indicador
+    path('indicador/', views.getIndicador),
+    path('indicador/<int:id>', views.getIndicador),
+
+    # Parametro
+    path('parametro/', views.getParametro),
+    path('parametro/<int:id>', views.getParametro),
+
+    # Tipo Función
+    path('tipofuncion/', views.getTipoFuncion),
+    path('tipofuncion/<int:id>', views.getTipoFuncion),
+
+    # Tipo Indicador
+    path('tipoindicador/', views.getTipoIndicador),
+    path('tipoindicador/<int:id>', views.getTipoIndicador),
 ]

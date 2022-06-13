@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
-from .models import Estructura, Objetivo, Actividad, ods, eje, finalidad_y_funcion, politica_publica, Tipo_Actividad, Beneficiario
+from .models import Estructura, Objetivo, Actividad, ods, eje, finalidad_y_funcion, politica_publica, Tipo_Actividad, Beneficiario, Indicador, Parametro, Tipofuncion, Tipo_Indicador
 
 
 class EstructuraSerializer(ModelSerializer):
@@ -77,3 +77,27 @@ class BeneficiarioSerializer(ModelSerializer):
     class Meta:
         model = Beneficiario
         fields = ['id', 'name']
+
+
+class IndicadorSerializer(ModelSerializer):
+    class Meta:
+        model = Indicador
+        fields = '__all__'
+
+
+class ParametroSerializer(ModelSerializer):
+    class Meta:
+        model = Parametro
+        fields = '__all__'
+
+
+class TipofuncionSerializaer(ModelSerializer):
+    class Meta:
+        model = Tipofuncion
+        fields = '__all__'
+
+
+class TipoIndicadorSerializer(ModelSerializer):
+    class Meta:
+        model = Tipo_Indicador
+        fields = '__all__'

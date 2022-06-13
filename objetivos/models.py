@@ -68,16 +68,6 @@ class politica_publica(MPTTModel):
         return self.name
 
 
-# class Tema_Estrategico(models.Model):
-#     name = models.CharField(max_length=50)
-#     situacion_actual = models.TextField(max_length=2000, null=True, blank=True)
-#     situacion_deseada = models.TextField(max_length=2000, null=True, blank=True)
-#     id_estructura = models.ForeignKey('Estructura', on_delete=models.CASCADE, null=True, blank=True)
-#
-#     def __str__(self):
-#         return self.name
-
-
 class Tipo_Actividad(models.Model):
     descripcion = models.CharField(max_length=50)
 
@@ -114,18 +104,6 @@ class Beneficiario(models.Model):
 
     def __str__(self):
         return self.name
-
-# class IndicadorxActividad(models.Model):
-#    id_indicador = models.ForeignKey('Indicador', on_delete=models.CASCADE, null=True, blank=True)
-#    id_actividad = models.ForeignKey('Actividad', on_delete=models.CASCADE, null=True, blank=True)
-#    peso = models.FloatField()
-#    def __str__(self):
-#        return self.id_actividad.name + " - " + self.id_indicador.name
-
-
-# class Objetivos_Requeridos(models.Model):
-# Objetivo_Precedente = models.ForeignKey('Objetivo', on_delete=models.CASCADE, null=True, blank=True, related_name='Precedente')
-# Objetivo_Siguiente = models.ForeignKey('Objetivo', on_delete=models.CASCADE, null=True, blank=True, related_name='Siguiente')
 
 
 class TipoAccion(models.Model):
@@ -220,6 +198,7 @@ class Preferencia(models.Model):
 class Tipofuncion(models.Model):
     name = models.CharField(max_length=50)
     func = models.CharField(max_length=255)
+    descripcion = models.CharField(max_length=255, null=True)
 
     def __str__(self):
         return self.name + f" ({self.func})"

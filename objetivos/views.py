@@ -5,8 +5,8 @@ from rest_framework import status
 from django.shortcuts import get_object_or_404
 from json import JSONEncoder
 import numpy as np
-from .models import Estructura, Objetivo, Actividad, ods, eje, finalidad_y_funcion, politica_publica, Tipo_Actividad, Beneficiario
-from .serializers import EstructuraSerializer, EstructuraItemSerializer, EstructuraItemNameSerializer, ObjetivoSerializer, ActividadSerializer, OdsSerializer, EjeSerializer, FinalidadyFuncionSerializer, PoliticaPublicaSerializer, TipoActividadSerializer, BeneficiarioSerializer
+from .models import Estructura, Objetivo, Actividad, ods, eje, finalidad_y_funcion, politica_publica, Tipo_Actividad, Beneficiario, Indicador, Parametro, Tipofuncion, Tipo_Indicador
+from .serializers import EstructuraSerializer, EstructuraItemSerializer, EstructuraItemNameSerializer, ObjetivoSerializer, ActividadSerializer, OdsSerializer, EjeSerializer, FinalidadyFuncionSerializer, PoliticaPublicaSerializer, TipoActividadSerializer, BeneficiarioSerializer, IndicadorSerializer, ParametroSerializer, TipofuncionSerializaer, TipoIndicadorSerializer
 from .utils import calcular_objetivo, calcular_oai, ajustar_cadena
 
 
@@ -242,6 +242,58 @@ def getTipoActividad(request, id=None):
 
     tipoactividad = Tipo_Actividad.objects.all()
     serializer = TipoActividadSerializer(tipoactividad, many=True)
+    return Response(serializer.data)
+
+
+# Indicador
+@api_view(['GET'])
+def getIndicador(request, id=None):
+    if id:
+        item = Indicador.objects.get(pk=id)
+        serializer = IndicadorSerializer(item)
+        return Response(serializer.data)
+
+    indicador = Indicador.objects.all()
+    serializer = IndicadorSerializer(indicador, many=True)
+    return Response(serializer.data)
+
+
+# Parametro
+@api_view(['GET'])
+def getParametro(request, id=None):
+    if id:
+        item = Parametro.objects.get(pk=id)
+        serializer = ParametroSerializer(item)
+        return Response(serializer.data)
+
+    parametro = Parametro.objects.all()
+    serializer = ParametroSerializer(parametro, many=True)
+    return Response(serializer.data)
+
+
+# Tipo Función
+@api_view(['GET'])
+def getTipoFuncion(request, id=None):
+    if id:
+        item = Tipofuncion.objects.get(pk=id)
+        serializer = TipofuncionSerializaer(item)
+        return Response(serializer.data)
+
+    tipo_funcion = Tipofuncion.objects.all()
+    serializer = TipofuncionSerializaer(tipo_funcion, many=True)
+    return Response(serializer.data)
+
+
+# Tipo Indicador
+@api_view(['GET'])
+def getTipoIndicador(request, id=None):
+    if id:
+        item = Tipo_Indicador.objects.get(pk=id)
+        serializer = TipoIndicadorSerializer(item)
+        return Response(serializer.data)
+
+    tipo_indicador = Tipo_Indicador.objects.all()
+    serializer = TipoIndicadorSerializer(tipo_indicador, many=True)
     return Response(serializer.data)
 
 
