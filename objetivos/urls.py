@@ -60,10 +60,12 @@ urlpatterns = [
     # Indicador
     path('indicador/', views.getIndicador),
     path('indicador/<int:id>', views.getIndicador),
+    path('setindicador/', views.setIndicador),
 
     # Parametro
     path('parametro/', views.getParametro),
     path('parametro/<int:id>', views.getParametro),
+    path('setparametro/', views.setParametro),
 
     # Tipo Función
     path('tipofuncion/', views.getTipoFuncion),
