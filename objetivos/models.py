@@ -97,6 +97,9 @@ class Actividad(models.Model):
     def __str__(self):
         return self.name
 
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
 
 class Beneficiario(models.Model):
     name = models.CharField(max_length=100)
@@ -104,9 +107,6 @@ class Beneficiario(models.Model):
 
     def __str__(self):
         return self.name
-
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
 
 
 class TipoAccion(models.Model):
