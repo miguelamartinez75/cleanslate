@@ -77,6 +77,13 @@ class BeneficiarioSerializer(ModelSerializer):
     class Meta:
         model = Beneficiario
         fields = ['id', 'name']
+        many = True
+
+    def create(self, validated_data):
+        beneficiarios = validated_data.pop('beneficiario', [])
+        instance = super().create(validated_data)
+        for l in beneficiarios:
+            instance.links.create(beneficiario=l)
 
 
 class IndicadorSerializer(ModelSerializer):

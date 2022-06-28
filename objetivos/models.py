@@ -105,6 +105,9 @@ class Beneficiario(models.Model):
     def __str__(self):
         return self.name
 
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
 
 class TipoAccion(models.Model):
     nombre = models.CharField(max_length=50, null=True)
