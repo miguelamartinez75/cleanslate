@@ -136,7 +136,7 @@ def getActividadPorPuesto(request, id=None):
     return Response(serializer.data)
 
 
-@api_view(['PUT'])
+@api_view(['POST'])
 def setActividad(request):
     serializer = ActividadSerializer(data=request.data)
     if serializer.is_valid():

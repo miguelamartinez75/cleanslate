@@ -4,6 +4,35 @@ from mptt.models import MPTTModel
 from treewidget.fields import TreeForeignKey
 
 
+class Estructura(MPTTModel):
+    name = models.CharField(max_length=200)
+    letra = models.CharField(max_length=20, null=True)
+    mission = models.TextField(null=True)
+    function = models.TextField(null=True)
+    decreto = models.CharField(max_length=50, null=True)
+    marco_legal = models.TextField(null=True)
+    diagnostico = models.TextField(null=True)
+    procesos_participativos = models.TextField(null=True)
+    # objetivos = models.ManyToManyField('Objetivo', blank=True)
+    # Habría que agregar campos para subir archivos adjuntos
+    # documento_myf = models.FileField
+
+    parent = models.ForeignKey('self', on_delete=models.CASCADE,
+                               null=True, blank=True, related_name='children')
+
+    def __str__(self):
+        if self.letra == "":
+            return self.name + " id(" + str(self.id) + ")"
+        else:
+            return self.letra + " - " + self.name + " id(" + str(self.id) + ")"
+
+    # def get_descendants_for(self, idx, include_self):
+    #     return set(self.nodes[idx].get_descendants(include_self=include_self))
+
+    class MPTTMeta:
+        order_insertion_by = ['name']
+
+
 class Objetivo(MPTTModel):
     nombre = models.CharField(max_length=50, null=True)
     descripcion = models.CharField(max_length=500)
@@ -75,18 +104,26 @@ class Tipo_Actividad(models.Model):
         return self.descripcion
 
 
+class Beneficiario(models.Model):
+    name = models.CharField(max_length=100)
+    createdAt = models.DateTimeField(null=True)
+
+    def __str__(self):
+        return self.name
+
+
 class Actividad(models.Model):
-    name = models.CharField(max_length=50, null=True)
-    Id_Tipo_Actividad = models.ForeignKey(Tipo_Actividad, on_delete=models.CASCADE, null=True, blank=True)
-    id_Estructura = models.ForeignKey('Estructura', on_delete=models.CASCADE, null=True, blank=True)
-    id_Objetivo = models.ForeignKey('Objetivo', on_delete=models.CASCADE, null=True, blank=True)
+    name = models.CharField(max_length=50)
+    id_Tipo_Actividad = models.ForeignKey(Tipo_Actividad, on_delete=models.CASCADE, null=True, blank=True)
+    id_Estructura = models.ForeignKey(Estructura, on_delete=models.CASCADE, null=True, blank=True)
+    id_Objetivo = models.ForeignKey(Objetivo, on_delete=models.CASCADE, null=True, blank=True)
     producto = models.CharField(max_length=500, null=True, blank=True)
     resultado = models.CharField(max_length=500, null=True, blank=True)
     id_ods = models.ForeignKey('ods', on_delete=models.CASCADE, null=True, blank=True)
     id_eje = models.ForeignKey('eje', on_delete=models.CASCADE, null=True, blank=True)
-    id_finalidadyfuncion = models.ForeignKey('finalidad_y_funcion', on_delete=models.CASCADE, null=True, blank=True)
-    id_politicapublica = models.ForeignKey('politica_publica', on_delete=models.CASCADE, null=True, blank=True)
-    beneficiario = models.ManyToManyField('Beneficiario', blank=True)
+    id_finalidadyfuncion = models.ForeignKey(finalidad_y_funcion, on_delete=models.CASCADE, null=True, blank=True)
+    id_politicapublica = models.ForeignKey(politica_publica, on_delete=models.CASCADE, null=True, blank=True)
+    beneficiario = models.ManyToManyField(Beneficiario, null=True, blank=True)
     # Nuevos campos
     problema = models.CharField(max_length=500, null=True, blank=True)
     productos_secundarios = models.CharField(max_length=500, null=True, blank=True)
@@ -99,14 +136,6 @@ class Actividad(models.Model):
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-
-
-class Beneficiario(models.Model):
-    name = models.CharField(max_length=100)
-    createdAt = models.DateTimeField()
-
-    def __str__(self):
-        return self.name
 
 
 class TipoAccion(models.Model):
@@ -154,35 +183,6 @@ class Insumo(models.Model):
     Inciso = models.CharField(max_length=20)
     cantidad = models.FloatField()
     importe = models.DecimalField(decimal_places=2, max_digits=4)
-
-
-class Estructura(MPTTModel):
-    name = models.CharField(max_length=200)
-    letra = models.CharField(max_length=20, null=True)
-    mission = models.TextField(null=True)
-    function = models.TextField(null=True)
-    decreto = models.CharField(max_length=50, null=True)
-    marco_legal = models.TextField(null=True)
-    diagnostico = models.TextField(null=True)
-    procesos_participativos = models.TextField(null=True)
-    # objetivos = models.ManyToManyField('Objetivo', blank=True)
-    # Habría que agregar campos para subir archivos adjuntos
-    # documento_myf = models.FileField
-
-    parent = models.ForeignKey('self', on_delete=models.CASCADE,
-                               null=True, blank=True, related_name='children')
-
-    def __str__(self):
-        if self.letra == "":
-            return self.name + " id(" + str(self.id) + ")"
-        else:
-            return self.letra + " - " + self.name + " id(" + str(self.id) + ")"
-
-    # def get_descendants_for(self, idx, include_self):
-    #     return set(self.nodes[idx].get_descendants(include_self=include_self))
-
-    class MPTTMeta:
-        order_insertion_by = ['name']
 
 
 class Preferencia(models.Model):
