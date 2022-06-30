@@ -37,10 +37,37 @@ class ObjetivoSerializer(ModelSerializer):
         fields = ('__all__')
 
 
+class BeneficiarioSerializer(ModelSerializer):
+    class Meta:
+        model = Beneficiario
+        fields = ['id', 'name']
+
+
 class ActividadSerializer(ModelSerializer):
+    # beneficiario = BeneficiarioSerializer(many=True, read_only=True)
+    # name = serializers.ListField(
+    #     child=serializers.CharField(),
+    #     write_only=True
+    # )
+
     class Meta:
         model = Actividad
-        fields = ('__all__')
+        fields = '__all__'
+
+    def create(self, validated_data):
+        beneficiarios_data = validated_data.pop('beneficiario')
+        beneficiarios = []
+        actividad = Actividad.objects.create(**validated_data)
+        for beneficiario_data in beneficiarios_data:
+            print(beneficiario_data)
+            beneficiario_id = beneficiario_data.pop('id')
+            print(beneficiario_id)
+            beneficiario = Beneficiario.objects.get(id=beneficiario_id, default=beneficiario_data)
+
+            beneficiarios.append(beneficiario)
+
+        actividad.beneficiario.add(**beneficiario)
+        return actividad
 
 
 class OdsSerializer(ModelSerializer):
@@ -71,19 +98,6 @@ class TipoActividadSerializer(ModelSerializer):
     class Meta:
         model = Tipo_Actividad
         fields = ['id', 'descripcion']
-
-
-class BeneficiarioSerializer(ModelSerializer):
-    class Meta:
-        model = Beneficiario
-        fields = ['id', 'name']
-        # many = True
-
-    # def create(self, validated_data):
-    #     beneficiarios = validated_data.pop('beneficiario', [])
-    #     instance = super().create(validated_data)
-    #     for l in beneficiarios:
-    #         instance.links.create(beneficiario=l)
 
 
 class IndicadorSerializer(ModelSerializer):
