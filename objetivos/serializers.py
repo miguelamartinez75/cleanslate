@@ -15,14 +15,14 @@ class EstructuraSerializer(ModelSerializer):
 
     class Meta:
         model = Estructura
-        fields = ('__all__')
+        fields = '__all__'
         #fields = ['id', 'name', 'letra', 'mission', 'function', 'decreto', 'marco_legal', 'diagnostico', 'procesos_participativos', 'parent']
 
 
 class EstructuraItemSerializer(ModelSerializer):
     class Meta:
         model = Estructura
-        fields = ('__all__')
+        fields = '__all__'
 
 
 class EstructuraItemNameSerializer(ModelSerializer):
@@ -34,7 +34,7 @@ class EstructuraItemNameSerializer(ModelSerializer):
 class ObjetivoSerializer(ModelSerializer):
     class Meta:
         model = Objetivo
-        fields = ('__all__')
+        fields = '__all__'
 
 
 class BeneficiarioSerializer(ModelSerializer):
@@ -59,15 +59,22 @@ class ActividadSerializer(ModelSerializer):
         beneficiarios = []
         actividad = Actividad.objects.create(**validated_data)
         for beneficiario_data in beneficiarios_data:
-            print(beneficiario_data)
-            beneficiario_id = beneficiario_data.pop('id')
-            print(beneficiario_id)
-            beneficiario = Beneficiario.objects.get(id=beneficiario_id, default=beneficiario_data)
-
+            beneficiario = Beneficiario.objects.get(id=beneficiario_data['id'])
             beneficiarios.append(beneficiario)
 
-        actividad.beneficiario.add(**beneficiario)
+        validated_data['beneficiarios'] = beneficiarios
         return actividad
+
+        # for beneficiario_data in beneficiarios_data:
+        #     print(beneficiario_data)
+        #     beneficiario_id = beneficiario_data.pop('id')
+        #     print(beneficiario_id)
+        #     beneficiario = Beneficiario.objects.get(id=beneficiario_id, default=beneficiario_data)
+        #
+        #     beneficiarios.append(beneficiario)
+
+        # actividad.beneficiario.add(**beneficiario)
+        # return actividad
 
 
 class OdsSerializer(ModelSerializer):
